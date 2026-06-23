@@ -1,5 +1,5 @@
 #include <iostream>
-#include <vector>
+#include <string>
 using namespace std;
 
 bool isAnagram(string s, string t) {
@@ -7,15 +7,16 @@ bool isAnagram(string s, string t) {
     if (s.length() != t.length())
         return false;
 
-    vector<int> freq(26, 0);
+    int count[26] = {0};
 
-    for (int i = 0; i < s.length(); i++) {
-        freq[s[i] - 'a']++;
-        freq[t[i] - 'a']--;
-    }
+    for (char c : s)
+        count[c - 'a']++;
+
+    for (char c : t)
+        count[c - 'a']--;
 
     for (int i = 0; i < 26; i++) {
-        if (freq[i] != 0)
+        if (count[i] != 0)
             return false;
     }
 
@@ -23,7 +24,6 @@ bool isAnagram(string s, string t) {
 }
 
 int main() {
-
     string s, t;
 
     cout << "Enter first string: ";
@@ -33,9 +33,9 @@ int main() {
     cin >> t;
 
     if (isAnagram(s, t))
-        cout << "True";
+        cout << "True (Anagram)" << endl;
     else
-        cout << "False";
+        cout << "False (Not Anagram)" << endl;
 
     return 0;
 }
