@@ -1,5 +1,4 @@
 #include <iostream>
-#include <vector>
 using namespace std;
 
 // Definition of ListNode
@@ -15,60 +14,62 @@ struct ListNode {
 
 class Solution {
 public:
-    bool hasCycle(ListNode* head) {
+    ListNode* middleNode(ListNode* head) {
         ListNode* slow = head;
         ListNode* fast = head;
 
         while (fast != nullptr && fast->next != nullptr) {
             slow = slow->next;
             fast = fast->next->next;
-
-            if (slow == fast)
-                return true;
         }
 
-        return false;
+        return slow;
     }
 };
+
+// Function to print linked list
+void printList(ListNode* head) {
+    while (head != nullptr) {
+        cout << head->val;
+        if (head->next != nullptr)
+            cout << " -> ";
+        head = head->next;
+    }
+    cout << endl;
+}
 
 int main() {
     int n;
     cout << "Enter number of nodes: ";
     cin >> n;
 
-    if (n == 0) {
+    if (n <= 0) {
         cout << "Linked List is empty." << endl;
         return 0;
     }
 
-    vector<ListNode*> nodes;
-
     cout << "Enter node values: ";
-    for (int i = 0; i < n; i++) {
-        int x;
+
+    int x;
+    cin >> x;
+
+    ListNode* head = new ListNode(x);
+    ListNode* temp = head;
+
+    for (int i = 1; i < n; i++) {
         cin >> x;
-        nodes.push_back(new ListNode(x));
+        temp->next = new ListNode(x);
+        temp = temp->next;
     }
 
-    // Connect nodes normally
-    for (int i = 0; i < n - 1; i++) {
-        nodes[i]->next = nodes[i + 1];
-    }
-
-    int pos;
-    cout << "Enter position to create cycle (-1 for no cycle): ";
-    cin >> pos;
-
-    if (pos != -1) {
-        nodes[n - 1]->next = nodes[pos];
-    }
+    cout << "\nOriginal Linked List: ";
+    printList(head);
 
     Solution obj;
+    ListNode* middle = obj.middleNode(head);
 
-    if (obj.hasCycle(nodes[0]))
-        cout << "Cycle Detected" << endl;
-    else
-        cout << "No Cycle" << endl;
+    cout << "Middle Node onwards: ";
+    printList(middle);
 
     return 0;
 }
