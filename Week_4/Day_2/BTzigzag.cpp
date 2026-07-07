@@ -3,7 +3,7 @@
 #include <queue>
 using namespace std;
 
-// Definition of Tree Node
+// Definition of TreeNode
 struct TreeNode {
     int val;
     TreeNode* left;
@@ -18,7 +18,7 @@ struct TreeNode {
 
 class Solution {
 public:
-    vector<vector<int>> levelOrder(TreeNode* root) {
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
 
         vector<vector<int>> ans;
 
@@ -28,17 +28,25 @@ public:
         queue<TreeNode*> q;
         q.push(root);
 
+        bool leftToRight = true;
+
         while (!q.empty()) {
 
             int size = q.size();
-            vector<int> level;
+            vector<int> level(size);
 
             for (int i = 0; i < size; i++) {
 
                 TreeNode* node = q.front();
                 q.pop();
 
-                level.push_back(node->val);
+                int index;
+                if (leftToRight)
+                    index = i;
+                else
+                    index = size - 1 - i;
+
+                level[index] = node->val;
 
                 if (node->left)
                     q.push(node->left);
@@ -48,6 +56,7 @@ public:
             }
 
             ans.push_back(level);
+            leftToRight = !leftToRight;
         }
 
         return ans;
@@ -69,9 +78,9 @@ int main() {
     root->right->right = new TreeNode(7);
 
     Solution obj;
-    vector<vector<int>> result = obj.levelOrder(root);
+    vector<vector<int>> result = obj.zigzagLevelOrder(root);
 
-    cout << "Level Order Traversal:\n";
+    cout << "Zigzag Level Order Traversal:\n";
 
     for (auto level : result) {
         for (int x : level) {
